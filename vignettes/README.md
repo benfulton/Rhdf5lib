@@ -90,7 +90,7 @@ change line 291 H5Defl.h from
 + if((fd = HDopen(full_name, O_RDONLY, 0)) < 0)
 ```
 
-```
+```bash
 version=1.10.5
 cd /c/hdf5_build/CMake-hdf5-${version}
 mkdir /c/hdf5_build/CMake-hdf5-${version}/hdf5
@@ -116,3 +116,35 @@ cp /c/hdf5_build/CMake-hdf5-1.10.5/hdf5-1.10.5/build_64/bin/liblibhdf5.a "${DIR6
 cp /c/hdf5_build/CMake-hdf5-1.10.5/hdf5-1.10.5/build_64/bin/liblibhdf5_cpp.a "${DIR64}"libhdf5_cpp.a
 cp /c/hdf5_build/CMake-hdf5-1.10.5/hdf5-1.10.5/build_64/bin/liblibhdf5_hl.a "${DIR64}"libhdf5_hl.a
 cp /c/hdf5_build/CMake-hdf5-1.10.5/hdf5-1.10.5/build_64/bin/liblibhdf5_hl_cpp.a "${DIR64}"libhdf5_hl_cpp.a
+```
+
+# Rtools40
+
+### Building 32-bit
+
+```bash
+#export PATH=/c/rtools40/mingw32/bin:$PATH
+#export CPATH=/c/Rtools/mingw_32/i686-w64-mingw32/include:/c/Rtools/mingw_32/include:$CPATH
+export LD_LIBRARY_PATH=/mingw32/lib/:/mingw32/lib/binutils/
+mkdir /c/hdf5_build/CMake-hdf5-1.10.5/hdf5-1.10.5/rtools40_build_32
+cd /c/hdf5_build/CMake-hdf5-1.10.5/hdf5-1.10.5/rtools40_build_32
+rm -R *
+cmake ../ -G "MSYS Makefiles" \
+-DSITE_OS_BITS:STRING="32" \
+-DCMAKE_SKIP_RPATH=ON \
+-DHDF5_ENABLE_DEPRECATED_SYMBOLS=ON \
+-DBUILD_SHARED_LIBS:BOOL=OFF \
+-DHDF5_BUILD_HL_LIB:BOOL=ON \
+-DHDF5_BUILD_CPP_LIB:BOOL=ON \
+-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
+-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
+-DBUILD_TESTING:BOOL=OFF \
+-DHDF5_BUILD_TOOLS:BOOL=OFF \
+-DHDF5_ALLOW_EXTERNAL_SUPPORT:STRING="TGZ" \
+-DZLIB_TGZ_NAME:STRING="ZLib.tar.gz" \
+-DSZIP_TGZ_NAME:STRING="SZip.tar.gz" \
+-DTGZPATH:STRING="/c/hdf5_build/CMake-hdf5-1.10.5/" \
+-DCMAKE_BUILD_TYPE:STRING="Release" 
+#-DCMAKE_C_STANDARD_LIBRARIES="-liberty" \
+cmake --build . 2> stderr.txt
+```
